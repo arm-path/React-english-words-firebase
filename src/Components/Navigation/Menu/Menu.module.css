@@ -53,3 +53,7 @@
     color: #ffffff;
     text-decoration: none;
 }
+
+.Menu ul li a:hover {
+    color: #d2d2d2;
+}

@@ -1,17 +1,20 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
 import Auxiliary from '../../../Fragments/Auxiliary/Auxiliary'
 import MenuBackground from "../MenuBackground/MenuBackground";
 import classes from './Menu.module.css'
 
 
-const links = ['Create Exercise', 'Do Exercises'] // Список навигации в менью.
-
+const links = [ // Список навигации в менью.
+    {to: '/', label: 'Do Exercises', exact: false},
+    {to: '/create', label: 'Create Exercise', exact: true},
+]
 
 class Menu extends React.Component {
     linkDraw = links.map((obj, index) => { // Атрибут класса, выводит список навигации менью, итерируя по константе links.
         return (
             <li key={index}>
-                <a herf="#">{obj}</a>
+                <li key={index}><NavLink to={obj.to} exact={obj.exact} onClick={this.props.clickEventMenuBackground}>{obj.label}</NavLink></li>
             </li>
         )
     })
