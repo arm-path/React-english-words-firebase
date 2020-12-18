@@ -1,0 +1,32 @@
+.ExerciseTopics{
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+
+    width: 100%;
+    padding-top: 100px;
+    color: #ffffff;
+    background: #2b2a29;
+}
+
+.ExerciseTopics ul{
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.ExerciseTopics ul li{
+    margin-bottom: 9px;
+    margin-left: 18px;
+}
+
+.ExerciseTopics ul li a{
+    font-size: 21px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.ExerciseTopics ul li a:hover{
+    color: #c6c6c6;
+}

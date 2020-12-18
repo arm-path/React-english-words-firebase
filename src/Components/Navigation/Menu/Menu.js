@@ -6,7 +6,7 @@ import classes from './Menu.module.css'
 
 
 const links = [ // Список навигации в менью.
-    {to: '/', label: 'Do Exercises', exact: false},
+    {to: '/', label: 'Exercise topic', exact: false},
     {to: '/create', label: 'Create Exercise', exact: true},
 ]
 
