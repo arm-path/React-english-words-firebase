@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
+import Layout from './Fragments/Layout/Layout'
+import Exercises from './BasicComponents/Exercises/Exercises'
 
 
 class App extends Component {
     render() {
         return (
-            <div>Hello world!</div>
+            <Layout>
+                <Exercises/>
+            </Layout>
         )
     }
 }

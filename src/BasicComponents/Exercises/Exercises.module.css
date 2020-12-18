@@ -1,0 +1,19 @@
+.Exercises {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+
+    width: 100%;
+    padding-top: 7rem;
+    color: #ffffff;
+    background: #2b2a29;
+}
+
+.Exercises > div {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.Exercises h1 {
+    text-align: center;
+}

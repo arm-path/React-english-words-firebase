@@ -1,0 +1,23 @@
+.Answer {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+
+    border: 0.1rem solid #ffffff;
+    border-radius: 0.2rem;
+
+    cursor: pointer;
+
+    transition: background-color .1s ease-in-out;
+}
+
+.Answer:hover {
+    background: rgba(0, 0, 0, .2);
+}
+
+.Answer.success {
+    background: rgba(148, 224, 74, 0.6);
+}
+
+.Answer.error {
+    background-color: rgba(224, 58, 58, .6);
+}
