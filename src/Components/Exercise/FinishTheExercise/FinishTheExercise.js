@@ -23,8 +23,8 @@ const FinishTheExercise = props => {
                     )
                 })}
             </ul>
-            <p>Количество вопросов: {props.exercises.length}<br/>
-                Правильных ответов: {props.NumberOfCorrectResults}</p>
+            <p>Number of questions: {props.exercises.length}<br/>
+                Correct answers: {props.NumberOfCorrectResults}</p>
             <Button onClick={props.clickEventRepeatExercise} type='dark'>Repeat</Button>
         </div>
     )

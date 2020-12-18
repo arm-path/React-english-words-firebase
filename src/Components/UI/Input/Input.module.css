@@ -1,0 +1,37 @@
+.Input {
+    margin-bottom: 3%;
+}
+
+.Input label {
+    display: block;
+
+    margin-bottom: 1.5%;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Input input {
+    display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 1.5%;
+
+    font-size: 1.2rem;
+    outline: none;
+    border: 1px solid #bababa;
+}
+
+.Input input:active, .Input input:focus {
+    border-bottom: 2px solid #2b2a29;
+}
+
+.Input span {
+    font-size: 0.8rem;
+    color: #c11616;
+}
+
+.Input.invalid label {
+    color: #c11616;
+}
