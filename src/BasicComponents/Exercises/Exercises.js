@@ -75,6 +75,16 @@ class Exercises extends React.Component {
             })
         }
     }
+    clickEventRepeatExercise = () => { // Возвращение state в первоначальное положение.
+        this.setState({
+            results: {},
+            NumberOfCorrectResults: 0,
+            isFinished: false,
+            activeExercise: 0,
+            answerStyle: null,
+        })
+
+    }
 
     render() {
         return (
@@ -82,7 +92,12 @@ class Exercises extends React.Component {
                 <div>
                     <h1>Learning English</h1>
                     {this.state.isFinished
-                        ? null
+                        ? <FinishTheExercise  // Components/Exercise/FinishTheExercise/FinishTheExercise
+                            results={this.state.results} // Результаты. {id-exercise: error or success}
+                            exercises={this.state.exercises} // Список упражнений. Слово и несколько вариантов перевода.
+                            NumberOfCorrectResults={this.state.NumberOfCorrectResults} // Количество правильных ответов.
+                            clickEventRepeatExercise={()=>this.clickEventRepeatExercise()} // Функция обнуления state.
+                        />
                         : <ActiveExercise // Components/Exercise/ActiveExercise/ActiveExercise
                             answers={this.state.exercises[this.state.activeExercise].answers} // Список вариантов ответа, вариантов перевода.
                             question={this.state.exercises[this.state.activeExercise].question} // Вопрос, слово для перевода.

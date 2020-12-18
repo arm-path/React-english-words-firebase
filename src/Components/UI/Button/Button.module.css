@@ -1,0 +1,36 @@
+.Button {
+    display: inline-block;
+    padding: 0.5rem 1.8rem;
+    margin: 0.2rem;
+
+    font-size: 1rem;
+    text-transform: uppercase;
+
+    border-radius: 0.3rem;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, .50);
+
+    cursor: pointer;
+}
+
+.Button:focus {
+    outline: none;
+}
+
+.Button:active {
+    box-shadow: inset 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, .3);
+}
+
+.Button:disabled {
+    background-color: #797979;
+
+    cursor: not-allowed;
+}
+
+.dark {
+    background-color: #2b2a29;
+    color: #ffffff;
+}
+
+.dark:hover{
+    background-color: #444341;
+}
