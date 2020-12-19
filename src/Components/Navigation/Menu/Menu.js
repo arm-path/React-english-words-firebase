@@ -8,6 +8,7 @@ import classes from './Menu.module.css'
 const links = [ // Список навигации в менью.
     {to: '/', label: 'Exercise topic', exact: false},
     {to: '/create', label: 'Create Exercise', exact: true},
+    {to: '/Authorization', label: 'Authorization', exact: true},
 ]
 
 class Menu extends React.Component {
