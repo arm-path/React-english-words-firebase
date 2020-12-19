@@ -21,34 +21,66 @@ let CreateAnswerOptions = (index) => {
     )
 }
 
+let primaryFormControl = () =>{
+    return {
+        question: createFormControl( // Вопрос, слово для перевода.
+            { // Конфигурации для передачи в input.
+                label: 'word',
+                errorMessage: 'The field cannot be empty'
+            },
+            { // Валидирование для передачи в input.
+                required: true // Поле обязательно для заполнения.
+            }),
+        // Варианты ответа, варианты перевода.
+        answer1: CreateAnswerOptions(1),
+        answer2: CreateAnswerOptions(2),
+        answer3: CreateAnswerOptions(3),
+    }
+}
+
+
+
 class CreateExercise extends React.Component {
 
     state = {
+        exercises: [], // Список добавленных упражнений.
         isFormValid: false, // Определяет валидацию формы.
         correctAnswer: 1, // Правильный вариант ответа.
-        formControl: {
-            question: createFormControl( // Вопрос, слово для перевода.
-                { // Конфигурации для передачи в input.
-                    label: 'word',
-                    errorMessage: 'The field cannot be empty'
-                },
-                { // Валидирование для передачи в input.
-                    required: true // Поле обязательно для заполнения.
-                }),
-            // Варианты ответа, варианты перевода.
-            answer1: CreateAnswerOptions(1),
-            answer2: CreateAnswerOptions(2),
-            answer3: CreateAnswerOptions(3),
-            answer4: CreateAnswerOptions(4)
-        }
+        formControl: primaryFormControl()
     }
 
     preventDefaultSubmit = event => { // Отменяет стандартное поведение submit формы.
         event.preventDefault()
     }
 
-    clickEventAddExercise = () => { // Событие клика по кнопке.
 
+    clickEventAddExercise = () => { // Событие клика по кнопке, добавление в список упражнений.
+        let exercises = [...this.state.exercises]
+        let stateCopy = {...this.state}
+        let formControl = {...stateCopy.formControl}
+        let exercise = { // Построение объекта для списка упражнений.
+            'question': formControl.question.value,
+            'answers': [
+                {'text': formControl.answer1.value, 'id': formControl.answer1.id},
+                {'text': formControl.answer2.value, 'id': formControl.answer1.id},
+                {'text': formControl.answer3.value, 'id': formControl.answer1.id},
+            ],
+            'correctAnswerId': stateCopy.correctAnswer
+        }
+
+        exercises.push(exercise) // Добавление объекта в список упражнений.
+        this.setState({
+            exercises,
+            formControl: primaryFormControl(),
+            isFormValid: false,
+            correctAnswer: 1,
+        })
+    }
+
+
+    clickEventAddExercises = () => {
+        // Событие клика по кнопке.
+        // TODO: Сервер.
     }
 
 
@@ -117,7 +149,11 @@ class CreateExercise extends React.Component {
                             type='dark'
                             disabled={!this.state.isFormValid}>Add Exercise
                         </Button>
-
+                        <Button
+                            onClick={this.clickEventAddExercises}
+                            type='dark'
+                            disabled={!this.state.isFormValid}>Add Exercises
+                        </Button>
                     </form>
                 </div>
             </div>
