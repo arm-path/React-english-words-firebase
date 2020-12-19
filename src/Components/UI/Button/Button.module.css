@@ -3,11 +3,11 @@
     padding: 1.5% 5%;
     margin: 0.2rem;
 
-    font-size: 1rem;
+    font-size: 1em;
     text-transform: uppercase;
 
-    border-radius: 0.3rem;
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, .50);
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, .50);
 
     cursor: pointer;
 }
@@ -33,4 +33,23 @@
 
 .dark:hover{
     background-color: #444341;
+}
+
+@media (max-width: 1000px) {
+    .Button{
+        display: block;
+        margin: 0.6rem auto;
+        font-size: 1.2em;
+    }
+}
+@media (max-width: 800px) {
+    .Button{
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 550px) {
+    .Button{
+        font-size: 0.8em;
+    }
 }

@@ -24,3 +24,30 @@
 
     cursor: pointer;
 }
+
+@media (max-width: 1000px) {
+    .Select label {
+        font-size: 1.2em;
+    }
+    .Select select {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 800px) {
+    .Select label {
+        font-size: 1em;
+    }
+    .Select select {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 550px) {
+    .Select label {
+        font-size: 0.8em;
+    }
+    .Select select {
+        font-size: 0.8em;
+    }
+}
