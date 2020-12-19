@@ -97,7 +97,7 @@ class CreateExercise extends React.Component {
             // ---> Components/UI/Select/Select
             value={this.state.correctAnswer}
             label='Choose the correct translate'
-            onChangeSelect={(event) => this.onChangeSelect(event)}
+            onChange={(event) => this.onChangeSelect(event)}
             options={[ // Варианты выбора.
                 {'text': 1, 'value': 1},
                 {'text': 2, 'value': 2},
