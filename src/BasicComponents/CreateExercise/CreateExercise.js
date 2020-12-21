@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import Auxiliary from '../../Fragments/Auxiliary/Auxiliary'
 import Button from '../../Components/UI/Button/Button'
 import Input from '../../Components/UI/Input/Input'
@@ -21,7 +22,7 @@ let CreateAnswerOptions = (index) => {
     )
 }
 
-let primaryFormControl = () =>{
+let primaryFormControl = () => {
     return {
         question: createFormControl( // Вопрос, слово для перевода.
             { // Конфигурации для передачи в input.
@@ -37,7 +38,6 @@ let primaryFormControl = () =>{
         answer3: CreateAnswerOptions(3),
     }
 }
-
 
 
 class CreateExercise extends React.Component {
@@ -78,9 +78,20 @@ class CreateExercise extends React.Component {
     }
 
 
-    clickEventAddExercises = () => {
-        // Событие клика по кнопке.
-        // TODO: Сервер.
+    clickEventAddExercises = async () => { // Работа с сервером, добавление в БД.
+        try{
+            await axios.post('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json', this.state.exercises)
+            this.setState({
+                exercises: [],
+                formControl: primaryFormControl(),
+                isFormValid: false,
+                correctAnswer: 1,
+            })
+
+        }catch(e){
+            console.log(e)
+        }
+
     }
 
 
@@ -152,7 +163,7 @@ class CreateExercise extends React.Component {
                         <Button
                             onClick={this.clickEventAddExercises}
                             type='dark'
-                            disabled={!this.state.isFormValid}>Add Exercises
+                            disabled={this.state.exercises.length === 0}>Add Exercises
                         </Button>
                     </form>
                 </div>
