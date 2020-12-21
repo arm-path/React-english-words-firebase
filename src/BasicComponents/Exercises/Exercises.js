@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import ActiveExercise from '../../Components/Exercise/ActiveExercise/ActiveExercise'
 import FinishTheExercise from '../../Components/Exercise/FinishTheExercise/FinishTheExercise'
 import classes from './Exercises.module.css'
@@ -86,6 +87,17 @@ class Exercises extends React.Component {
 
     }
 
+    // TODO: axios -> firebase
+    componentDidMount() {
+        axios.get('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json').then(response => {
+            console.log(response)
+        })
+
+        // axios - Библиотека для работы и взаимодействия с API.
+        // axios.get() <- В метод get передается url api с данными.
+        // response ответ от сервера.
+    }
+
     render() {
         return (
             <div className={classes.Exercises}>
@@ -96,7 +108,7 @@ class Exercises extends React.Component {
                             results={this.state.results} // Результаты. {id-exercise: error or success}
                             exercises={this.state.exercises} // Список упражнений. Слово и несколько вариантов перевода.
                             NumberOfCorrectResults={this.state.NumberOfCorrectResults} // Количество правильных ответов.
-                            clickEventRepeatExercise={()=>this.clickEventRepeatExercise()} // Функция обнуления state.
+                            clickEventRepeatExercise={() => this.clickEventRepeatExercise()} // Функция обнуления state.
                         />
                         : <ActiveExercise // Components/Exercise/ActiveExercise/ActiveExercise
                             answers={this.state.exercises[this.state.activeExercise].answers} // Список вариантов ответа, вариантов перевода.
