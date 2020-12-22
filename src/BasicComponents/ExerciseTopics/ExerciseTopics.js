@@ -1,18 +1,38 @@
 import React from 'react'
+import axios from 'axios'
 import {NavLink} from 'react-router-dom'
 import classes from './ExerciseTopics.module.css'
 
 
 class ExerciseTopics extends React.Component {
 
+    state = {
+        topics: []
+    }
+
     ExerciseTopicsList = () => {
-        return ['Theme-1', 'Theme-2', 'Theme-3'].map((obj, index) => {
+        return this.state.topics.map((obj, index) => {
             return (
-                <li key={index}>
-                    <NavLink to={'/exercise/' + obj}>{obj}</NavLink>
+                <li key={obj.key}>
+                    <NavLink to={'/exercise/' + obj.key}>{index + 1}. {obj.theme}</NavLink>
                 </li>
             )
         })
+    }
+
+    async componentDidMount() {
+        try {
+            let response = await axios.get('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json')
+            let topics = []
+            Object.keys(response.data).forEach((key, value) => {
+                Object.keys(response.data[key]).forEach((theme) => {
+                    topics.push({key: key, theme: theme})
+                })
+            })
+            this.setState({topics})
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     render() {
