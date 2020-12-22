@@ -22,6 +22,18 @@ let CreateAnswerOptions = (index) => {
     )
 }
 
+let CreateThemeExercises = () => {
+    // Формирование темы упражнения. Функция для построения state и сброса после добавления упражнения.
+    return createFormControl(  // Формирование данных для передачи в Input.
+        {
+            label: 'Theme exercises',
+            errorMessage: 'Please enter a subject'
+        },
+        {
+            required: true
+        })
+}
+
 let primaryFormControl = () => {
     return {
         question: createFormControl( // Вопрос, слово для перевода.
@@ -43,6 +55,7 @@ let primaryFormControl = () => {
 class CreateExercise extends React.Component {
 
     state = {
+        theme: CreateThemeExercises(),
         exercises: [], // Список добавленных упражнений.
         isFormValid: false, // Определяет валидацию формы.
         correctAnswer: 1, // Правильный вариант ответа.
@@ -79,19 +92,23 @@ class CreateExercise extends React.Component {
 
 
     clickEventAddExercises = async () => { // Работа с сервером, добавление в БД.
-        try{
-            await axios.post('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json', this.state.exercises)
-            this.setState({
-                exercises: [],
-                formControl: primaryFormControl(),
-                isFormValid: false,
-                correctAnswer: 1,
-            })
+        if (this.state.theme.value !== '') {
+            try {
+                let data = {} // {Тема: [Упражнения]}
+                data[this.state.theme.value] = this.state.exercises
+                await axios.post('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json', data)
+                this.setState({
+                    theme: CreateThemeExercises(),
+                    exercises: [],
+                    formControl: primaryFormControl(),
+                    isFormValid: false,
+                    correctAnswer: 1,
+                })
 
-        }catch(e){
-            console.log(e)
+            } catch (e) {
+                console.log(e)
+            }
         }
-
     }
 
 
@@ -135,6 +152,14 @@ class CreateExercise extends React.Component {
         this.setState({correctAnswer})
     }
 
+
+    onChangeEventThemeInput = (event, obj) => { // Изменение state -> theme. Получение темы упражнения в value.
+        obj.value = event.target.value
+        obj.touched = true
+        obj.valid = validateInput(obj.value, obj.validation)
+        this.setState({theme: obj})
+    }
+
     render() {
         let select = <Select  // Переменная для получения и отображения поля Select.
             // ---> Components/UI/Select/Select
@@ -148,6 +173,12 @@ class CreateExercise extends React.Component {
                 {'text': 4, 'value': 4},
             ]}
         />
+
+        let inputTheme = <Input // Input темы упражнения.
+            {...this.state.theme}
+            onChange={event => this.onChangeEventThemeInput(event, this.state.theme)}
+        />
+
         return (
             <div className={classes.CreateExercise}>
                 <div>
@@ -155,6 +186,7 @@ class CreateExercise extends React.Component {
                     <form onSubmit={event => this.preventDefaultSubmit(event)}>
                         {this.renderInput()}
                         {select}
+                        {this.state.exercises.length === 0 ? null : inputTheme}
                         <Button
                             onClick={this.clickEventAddExercise}
                             type='dark'
@@ -163,7 +195,7 @@ class CreateExercise extends React.Component {
                         <Button
                             onClick={this.clickEventAddExercises}
                             type='dark'
-                            disabled={this.state.exercises.length === 0}>Add Exercises
+                            disabled={this.state.exercises.length === 0 || this.state.theme.value === ''}>Add Exercises
                         </Button>
                     </form>
                 </div>
