@@ -1,13 +1,15 @@
 import React from 'react'
 import axios from 'axios'
 import {NavLink} from 'react-router-dom'
+import Loader from '../../Components/UI/Loader/Loader'
 import classes from './ExerciseTopics.module.css'
 
 
 class ExerciseTopics extends React.Component {
 
     state = {
-        topics: []
+        topics: [],
+        loader: true
     }
 
     ExerciseTopicsList = () => {
@@ -29,7 +31,7 @@ class ExerciseTopics extends React.Component {
                     topics.push({key: key, theme: theme})
                 })
             })
-            this.setState({topics})
+            this.setState({topics, loader: false})
         } catch (e) {
             console.log(e)
         }
@@ -40,9 +42,12 @@ class ExerciseTopics extends React.Component {
             <div className={classes.ExerciseTopics}>
                 <div>
                     <h1>Exercise Topics</h1>
-                    <ul>
-                        {this.ExerciseTopicsList()}
-                    </ul>
+                    {this.state.loader ? <Loader/> :
+                        <ul>
+                            {this.ExerciseTopicsList()}
+                        </ul>
+                    }
+
                 </div>
             </div>
         )
