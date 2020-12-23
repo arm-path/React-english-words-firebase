@@ -75,8 +75,8 @@ class CreateExercise extends React.Component {
             'question': formControl.question.value,
             'answers': [
                 {'text': formControl.answer1.value, 'id': formControl.answer1.id},
-                {'text': formControl.answer2.value, 'id': formControl.answer1.id},
-                {'text': formControl.answer3.value, 'id': formControl.answer1.id},
+                {'text': formControl.answer2.value, 'id': formControl.answer2.id},
+                {'text': formControl.answer3.value, 'id': formControl.answer3.id},
             ],
             'correctAnswerId': stateCopy.correctAnswer
         }

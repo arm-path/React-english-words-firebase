@@ -1,34 +1,22 @@
 import React from 'react'
+import axios from 'axios'
+import {withRouter} from 'react-router-dom';
 import ActiveExercise from '../../Components/Exercise/ActiveExercise/ActiveExercise'
 import FinishTheExercise from '../../Components/Exercise/FinishTheExercise/FinishTheExercise'
+import Loader from '../../Components/UI/Loader/Loader'
 import classes from './Exercises.module.css'
 
 
 class Exercises extends React.Component {
     state = {
+        loader: true,
         results: {}, // Результаты. {id-exercise: error or success}
         NumberOfCorrectResults: 0, // Количество правильных резултатов.
         isFinished: false, // Завершение упражнений.
         activeExercise: 0, // Активное упражнение. Id упражнения.
         answerStyle: null, // Стиль при клике на ответ.
-        exercises: [ // Список упражнений. Слово и несколько вариантов перевода.
-            {
-                'id': 0, // Уникальный идентификатор упражнения.
-                'question': 'Select', // Вопрос, слово для перевода.
-                'answers': [
-                    {'text': 'Выбрать', id: 1}, {'text': 'Вставить', id: 2}, {'text': 'Вырезать', id: 3}
-                ], // Варианты ответа, варианты перевода.
-                'correctAnswerId': 1 // Правильный ответ, правильный перевод.
-            },
-            {
-                'id': 1, // Уникальный идентификатор упражнения.
-                'question': 'Insert', // Вопрос, слово для перевода.
-                'answers': [
-                    {'text': 'Выбрать', id: 1}, {'text': 'Вставить', id: 2}, {'text': 'Вырезать', id: 3}
-                ], // Варианты ответа, варианты перевода.
-                'correctAnswerId': 2 // Правильный ответ, правильный перевод.
-            }
-        ]
+        exercises: []// Список упражнений. Слово и несколько вариантов перевода.
+
     }
 
     clickEventAnswer = idAnswer => { // Событие клика по возможному ответу, переводу.
@@ -86,32 +74,48 @@ class Exercises extends React.Component {
 
     }
 
+    async componentDidMount() {
+        let id_exercise = this.props.match.params.id
+        try {
+            const response = await axios.get(`https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises/${id_exercise}.json`)
+            let exercises = Object.values(response.data)
+            exercises = exercises[0]
+            this.setState({exercises, loader: false})
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 
     render() {
         return (
             <div className={classes.Exercises}>
                 <div>
                     <h1>Learning English</h1>
-                    {this.state.isFinished
-                        ? <FinishTheExercise  // Components/Exercise/FinishTheExercise/FinishTheExercise
-                            results={this.state.results} // Результаты. {id-exercise: error or success}
-                            exercises={this.state.exercises} // Список упражнений. Слово и несколько вариантов перевода.
-                            NumberOfCorrectResults={this.state.NumberOfCorrectResults} // Количество правильных ответов.
-                            clickEventRepeatExercise={() => this.clickEventRepeatExercise()} // Функция обнуления state.
-                        />
-                        : <ActiveExercise // Components/Exercise/ActiveExercise/ActiveExercise
-                            answers={this.state.exercises[this.state.activeExercise].answers} // Список вариантов ответа, вариантов перевода.
-                            question={this.state.exercises[this.state.activeExercise].question} // Вопрос, слово для перевода.
-                            exercisesNumber={this.state.activeExercise + 1} // Номер текущего упражнения.
-                            exercisesNumbers={this.state.exercises.length} // Общее количество упражнений.
-                            answerStyle={this.state.answerStyle} // Стиль ответа.
-                            clickEventAnswer={this.clickEventAnswer} // Событие клика по ответу.
-                        />
+                    {this.state.loader ?
+                        <Loader/> :
+                        this.state.isFinished
+                            ? <FinishTheExercise  // Components/Exercise/FinishTheExercise/FinishTheExercise
+                                results={this.state.results} // Результаты. {id-exercise: error or success}
+                                exercises={this.state.exercises} // Список упражнений. Слово и несколько вариантов перевода.
+                                NumberOfCorrectResults={this.state.NumberOfCorrectResults} // Количество правильных ответов.
+                                clickEventRepeatExercise={() => this.clickEventRepeatExercise()} // Функция обнуления state.
+                            />
+                            : <ActiveExercise // Components/Exercise/ActiveExercise/ActiveExercise
+                                answers={this.state.exercises[this.state.activeExercise].answers} // Список вариантов ответа, вариантов перевода.
+                                question={this.state.exercises[this.state.activeExercise].question} // Вопрос, слово для перевода.
+                                exercisesNumber={this.state.activeExercise + 1} // Номер текущего упражнения.
+                                exercisesNumbers={this.state.exercises.length} // Общее количество упражнений.
+                                answerStyle={this.state.answerStyle} // Стиль ответа.
+                                clickEventAnswer={this.clickEventAnswer} // Событие клика по ответу.
+                            />
                     }
+
                 </div>
             </div>
         )
     }
 }
 
-export default Exercises
+export default withRouter(Exercises)
