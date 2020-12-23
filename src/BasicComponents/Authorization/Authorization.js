@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import Input from '../../Components/UI/Input/Input'
 import Button from '../../Components/UI/Button/Button'
 import {createFormControl, validateInput, validateForm} from "../../Form/FormControl/formControl";
@@ -31,10 +32,32 @@ class Authorization extends React.Component {
         }
     }
 
-    clickEventLogin = () => { // Событие клика по кнопке логин.
+    clickEventLogin = async () => { // Событие клика по кнопке логин.
+        try {
+            let date = {
+                email: this.state.formControl.emailControl.value,
+                password: this.state.formControl.passwordControl.value,
+                returnSecureToken: true
+            }
+            let response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0TQJmq0crWnvnhFQONMxqJfNNN8nk0IU', date)
+            console.log(response)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
-    clickEventRegistration = () => { // Событие клика по кнопке регистрация.
+    clickEventRegistration = async () => { // Событие клика по кнопке регистрация.
+        try {
+            let date = {
+                email: this.state.formControl.emailControl.value,
+                password: this.state.formControl.passwordControl.value,
+                returnSecureToken: true
+            }
+            let response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD0TQJmq0crWnvnhFQONMxqJfNNN8nk0IU', date)
+            console.log(response)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     submitForm = event => { // Событие отмены стандартного поведения submit у формы.
