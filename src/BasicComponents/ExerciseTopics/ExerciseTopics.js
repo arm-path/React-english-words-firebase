@@ -1,19 +1,15 @@
 import React from 'react'
-import axios from 'axios'
 import {NavLink} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {fetchExercisesTopics} from '../../Redux/actions/exerciseAction'
 import Loader from '../../Components/UI/Loader/Loader'
 import classes from './ExerciseTopics.module.css'
 
 
 class ExerciseTopics extends React.Component {
 
-    state = {
-        topics: [],
-        loader: true
-    }
-
     ExerciseTopicsList = () => {
-        return this.state.topics.map((obj, index) => {
+        return this.props.topics.map((obj, index) => {
             return (
                 <li key={obj.key}>
                     <NavLink to={'/exercise/' + obj.key}>{index + 1}. {obj.theme}</NavLink>
@@ -23,18 +19,9 @@ class ExerciseTopics extends React.Component {
     }
 
     async componentDidMount() {
-        try {
-            let response = await axios.get('https://learn-english-aab4b-default-rtdb.firebaseio.com/exercises.json')
-            let topics = []
-            Object.keys(response.data).forEach((key, value) => {
-                Object.keys(response.data[key]).forEach((theme) => {
-                    topics.push({key: key, theme: theme})
-                })
-            })
-            this.setState({topics, loader: false})
-        } catch (e) {
-            console.log(e)
-        }
+        console.log(this.props)
+        this.props.fetchExercisesTopics()
+        console.log(this.props)
     }
 
     render() {
@@ -42,16 +29,29 @@ class ExerciseTopics extends React.Component {
             <div className={classes.ExerciseTopics}>
                 <div>
                     <h1>Exercise Topics</h1>
-                    {this.state.loader ? <Loader/> :
+                    {this.props.loader && this.props.topics.length !== 0 ? <Loader/> :
                         <ul>
                             {this.ExerciseTopicsList()}
                         </ul>
                     }
-
                 </div>
             </div>
         )
     }
 }
 
-export default ExerciseTopics
+function mapStateToProps(state){
+    return {
+        topics: state.getExercises.topics,
+        loader: state.getExercises.loader,
+        error: state.getExercises.error,
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        fetchExercisesTopics: () => dispatch(fetchExercisesTopics())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExerciseTopics)
