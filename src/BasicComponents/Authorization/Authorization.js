@@ -1,8 +1,10 @@
 import React from 'react'
 import axios from 'axios'
+import {connect} from 'react-redux'
 import Input from '../../Components/UI/Input/Input'
 import Button from '../../Components/UI/Button/Button'
 import {createFormControl, validateInput, validateForm} from "../../Form/FormControl/formControl";
+import {loginAndRegistration} from '../../Redux/actions/authorizationAction'
 import classes from './Authorization.module.css'
 
 
@@ -32,32 +34,14 @@ class Authorization extends React.Component {
         }
     }
 
-    clickEventLogin = async () => { // Событие клика по кнопке логин.
-        try {
-            let date = {
-                email: this.state.formControl.emailControl.value,
-                password: this.state.formControl.passwordControl.value,
-                returnSecureToken: true
-            }
-            let response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0TQJmq0crWnvnhFQONMxqJfNNN8nk0IU', date)
-            console.log(response)
-        } catch (e) {
-            console.log(e)
-        }
+    clickEventLogin = async () => {
+        // Событие клика по кнопке логин.
+        this.props.loginAndRegistration(this.state.formControl.emailControl.value, this.state.formControl.passwordControl.value, true)
     }
 
-    clickEventRegistration = async () => { // Событие клика по кнопке регистрация.
-        try {
-            let date = {
-                email: this.state.formControl.emailControl.value,
-                password: this.state.formControl.passwordControl.value,
-                returnSecureToken: true
-            }
-            let response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD0TQJmq0crWnvnhFQONMxqJfNNN8nk0IU', date)
-            console.log(response)
-        } catch (e) {
-            console.log(e)
-        }
+    clickEventRegistration = async () => {
+        // Событие клика по кнопке регистрация.
+        this.props.loginAndRegistration(this.state.formControl.emailControl.value, this.state.formControl.passwordControl.value, false)
     }
 
     submitForm = event => { // Событие отмены стандартного поведения submit у формы.
@@ -120,4 +104,10 @@ class Authorization extends React.Component {
     }
 }
 
-export default Authorization
+const mapDispatchToProps = dispatch => {
+    return {
+        loginAndRegistration: (email, password, isLogin) => dispatch(loginAndRegistration(email, password, isLogin))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Authorization)
