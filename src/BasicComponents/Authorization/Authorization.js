@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import {connect} from 'react-redux'
 import Input from '../../Components/UI/Input/Input'
 import Button from '../../Components/UI/Button/Button'

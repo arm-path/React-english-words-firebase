@@ -16,11 +16,15 @@ export function loginAndRegistration(email, password, isLogin) {
             } else {
                 url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD0TQJmq0crWnvnhFQONMxqJfNNN8nk0IU'
             }
+
             let response = await axios.post(url, date)
             let data = response.data
+
+            const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000)
+
             localStorage.setItem('token', data.idToken)
             localStorage.setItem('localId', data.localId)
-            localStorage.setItem('expiresIn', data.expiresIn)
+            localStorage.setItem('expiresIn', expirationDate)
 
             dispatch(loginOrRegistration(data.idToken))
             dispatch(autoTimeLogout(data.expiresIn))
@@ -31,11 +35,20 @@ export function loginAndRegistration(email, password, isLogin) {
     }
 }
 
-// LOGIN_OR_REGISTRATION
-export function loginOrRegistration(token) {
-    return {
-        type: LOGIN_OR_REGISTRATION,
-        token
+export function autoTimeLogin() {
+    return dispatch => {
+        let token = localStorage.getItem('token')
+        if (!token) {
+            // dispatch(logout())
+        } else {
+            let expirationDate = new Date(localStorage.getItem('expiresIn'))
+            if (expirationDate <= new Date()) {
+                // dispatch(logout())
+            } else {
+                dispatch(loginOrRegistration(token))
+                dispatch(autoTimeLogout((expirationDate.getTime() - new Date().getTime()) / 1000))
+            }
+        }
     }
 }
 
@@ -47,6 +60,15 @@ export function autoTimeLogout(timeLogout) {
     }
 }
 
+// LOGIN_OR_REGISTRATION
+export function loginOrRegistration(token) {
+    return {
+        type: LOGIN_OR_REGISTRATION,
+        token
+    }
+}
+
+// AUTO_LOGOUT
 export function logout() {
     localStorage.removeItem('token')
     localStorage.removeItem('localId')
@@ -54,6 +76,5 @@ export function logout() {
 
     return {
         type: AUTO_LOGOUT,
-        token: null
     }
 }

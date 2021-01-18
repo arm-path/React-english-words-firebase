@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import Menu from '../../Components/Navigation/Menu/Menu'
 import MenuToggle from '../../Components/Navigation/MenuToggle/MenuToggle'
 import classes from './Layout.module.css'
@@ -21,6 +22,7 @@ class Layout extends React.Component {
                 <Menu // Менью.
                     isOpen={this.state.isOpen}
                     clickEventMenuBackground={this.clickEventMenuBackground}
+                    isAuthenticated={this.props.isAuthenticated}
                 />
                 <MenuToggle // Иконки менью. Крестик и менью бар.
                     isOpen={this.state.isOpen}
@@ -35,4 +37,10 @@ class Layout extends React.Component {
     }
 }
 
-export default Layout
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: !!state.authorization.token
+    }
+}
+
+export default connect(mapStateToProps)(Layout)

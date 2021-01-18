@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
         case AUTO_LOGOUT:
             return {
                 ...state,
-                token: action.token
+                token: null
             }
         default:
             return state
