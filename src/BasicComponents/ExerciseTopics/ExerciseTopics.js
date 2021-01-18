@@ -19,9 +19,7 @@ class ExerciseTopics extends React.Component {
     }
 
     async componentDidMount() {
-        console.log(this.props)
         this.props.fetchExercisesTopics()
-        console.log(this.props)
     }
 
     render() {

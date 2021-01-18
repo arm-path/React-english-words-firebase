@@ -11,22 +11,11 @@ import classes from './Exercises.module.css'
 
 class Exercises extends React.Component {
 
-
-    clickEventRepeatExercise = () => { // Возвращение state в первоначальное положение.
-        this.setState({
-            results: {},
-            NumberOfCorrectResults: 0,
-            isFinished: false,
-            activeExercise: 0,
-            answerStyle: null,
-        })
-
-    }
-
     componentDidMount() {
-        console.log(this.props)
-        console.log(this.props.match.params.id)
         this.props.fetchExercises(this.props.match.params.id)
+    }
+    componentWillUnmount() {
+        this.props.clickEventRepeatExercise()
     }
 
     render() {
@@ -34,9 +23,9 @@ class Exercises extends React.Component {
             <div className={classes.Exercises}>
                 <div>
                     <h1>Learning English</h1>
-                    {this.props.loader && !this.props.exercises ?
-                        <Loader/> :
-                        this.props.isFinished
+                    {this.props.loader || !this.props.exercises
+                        ? <Loader/>
+                        : this.props.isFinished
                             ? <FinishTheExercise  // Components/Exercise/FinishTheExercise/FinishTheExercise
                                 results={this.props.results} // Результаты. {id-exercise: error or success}
                                 exercises={this.props.exercises} // Список упражнений. Слово и несколько вариантов перевода.
@@ -52,7 +41,6 @@ class Exercises extends React.Component {
                                 clickEventAnswer={this.props.clickEventAnswer} // Событие клика по ответу.
                             />
                     }
-
                 </div>
             </div>
         )

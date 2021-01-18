@@ -37,7 +37,6 @@ const exerciseReducer = (state = initialState, action) => {
                 ...state,
                 topics: action.topics,
                 loader: false,
-
             }
         case FETCH_EXERCISES_TOPICS_ERROR:
             return {
